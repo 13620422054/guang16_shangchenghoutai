@@ -1,23 +1,20 @@
 <template>
-  <main>
-    <h1>{{ title }}</h1>
-  </main>
+    <div>
+        {{ val }}
+    </div>
 </template>
 
 <script>
-// 导出组件配置
-export default {
-    data() {
-        return {
-            title: 'Hello World!'
-        }
+    export default {
+        // 这是es6中对象定义方法的语法
+        data() {
+            return {
+                val: 'vue脚手架测试'
+            }
+        },
     }
-}
 </script>
 
 <style scoped>
-h1 {
-    font-size: 30px;
-    color: red;
-}
+
 </style>

@@ -1,13 +1,9 @@
-// 导入Vue库
-import Vue from 'Vue';
+import Vue from 'vue'
 
-// 导入根组件
-import App from './component/App.vue';
+import App from './component/App.vue'
 
-// 渲染根组件到占位标签上
 new Vue({
     el: '#app',
-    render(createElement) {
-        return createElement(App);
-    }
-});
+    // 下面使用的箭头函数也是es6语法
+    render: createElement => createElement(App)
+})
