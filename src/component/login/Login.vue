@@ -1,21 +1,24 @@
 <template>
     <div class='login'>
         <div class="box">
-            <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-  <el-form-item label="密码" prop="pass">
-    <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="确认密码" prop="checkPass">
-    <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="年龄" prop="age">
-    <el-input v-model.number="ruleForm2.age"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-    <el-button @click="resetForm('ruleForm2')">重置</el-button>
-  </el-form-item>
-</el-form>
+            <el-form :model="ruleForm2" :rules="rules2" status-icon ref="abc" label-width="100px" class="demo-ruleForm">
+ 
+                 <!-- label用来设置表单提示文字, prop用来指定当前表单代表的字段名(可省略, 但是如果需要表单校验与重置功能, 必须写) -->
+                <el-form-item label="账号" prop="uname">
+                     <!-- v-model双向数据绑定, 需要绑定data里的数据, 将来要把这些数据提交给后端 -->
+                     <el-input type="password" v-model="ruleForm2.uname" auto-complete="off"></el-input>
+                 </el-form-item>
+ 
+                 <el-form-item label="密码" prop="upwd">
+                     <el-input type="password" v-model="ruleForm2.upwd" auto-complete="off"></el-input>
+                 </el-form-item>
+ 
+                 <el-form-item>
+                     <el-button type="primary" @click="submitForm('abc')">登陆</el-button>
+                     <el-button @click="resetForm('abc')">重置</el-button>
+                 </el-form-item>
+ 
+             </el-form>
         </div>
     </div>
 </template>
@@ -23,68 +26,47 @@
 <script>
    export default {
     data() {
-      var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.ruleForm2.checkPass !== '') {
-            this.$refs.ruleForm2.validateField('checkPass');
-          }
-          callback();
-        }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm2.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
+      
+      
+      
       return {
         ruleForm2: {
-          pass: '',
-          checkPass: '',
-          age: ''
+          uname: '',
+          upwd: ''
+          
         },
         rules2: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
+          uname: [
+           { required: true, message: "请输入用户名", trigger: "blur" }
           ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
+          upwd: [
+            { required: true, message: "请输入密码", trigger: "blur" }
           ]
+          
         }
       };
     },
     methods: {
+        login(){
+            this.$http.post(this.$api.login,this.ruleForm2).then((res)=>{
+                
+              if(res.data.status==0){
+                //   this.$alert(res.data.message)
+                //保存用户名
+                localStorage.setItem('uname',res.data.message.uname);
+                // 跳转到后台页面
+                this.$router.push({name:'admin'});
+              }else{
+                   this.$alert(res.data.message)
+              }
+            })
+        },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.login();
           } else {
-            console.log('error submit!!');
-            return false;
+             this.$alert("账号或密码不合格!");
           }
         });
       },
