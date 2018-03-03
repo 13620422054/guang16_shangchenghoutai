@@ -10,10 +10,16 @@ Vue.use(VueRouter)
 
 
 import Admin from '../component/admin/Admin.vue'
-import Shopcart from '../component/admin/shopcart/Shopcart.vue'
+import goodsList from '../component/admin/goods/list/List.vue'
+import Deail from '../component/admin/goods/detail/Detail.vue'
+import CommentList from '../component/admin/goods/comment/Comment.vue'
 
-const shopcart = [
-    { name: 'shopcart', path: 'shopcart', component: Shopcart },
+
+// admin的子路由=> 商品管理模块相关页面
+const goods = [
+    { name: 'goodsList', path: 'goods/list', component: goodsList },
+    { name: 'goodsDetail', path: 'goods/detail/:id', component: Deail },
+    { name: 'goodsDetail', path: 'goods/comment', component: CommentList }
 ];
 
 
@@ -21,6 +27,6 @@ const shopcart = [
 export default new VueRouter({
     routes: [
         { name: 'login', path: '/login', component: Login },
-        { name: "admin", path: '/admin', component: Admin, children: [...shopcart] }
+        { name: "admin", path: '/admin', component: Admin, children: [...goods] }
     ]
 })

@@ -6,7 +6,7 @@
                  <!-- label用来设置表单提示文字, prop用来指定当前表单代表的字段名(可省略, 但是如果需要表单校验与重置功能, 必须写) -->
                 <el-form-item label="账号" prop="uname">
                      <!-- v-model双向数据绑定, 需要绑定data里的数据, 将来要把这些数据提交给后端 -->
-                     <el-input type="password" v-model="ruleForm2.uname" auto-complete="off"></el-input>
+                     <el-input type="text" v-model="ruleForm2.uname" auto-complete="off"></el-input>
                  </el-form-item>
  
                  <el-form-item label="密码" prop="upwd">
