@@ -85,7 +85,7 @@
             pageIndex: 1,
             pageSize: 10,
             searchvalue: '',
-            total : ""
+            total : 0
         },
         // 当多选框被点击的时候用数组把数据存储起来
         selectedGoodsList: [],
@@ -104,12 +104,16 @@
             this.getGoodsData();
         },
 
-
-        handleSizeChange(){
-
+        //监听每页数量变更事件
+        handleSizeChange(size){
+            this.apiQuery.pageSize=  size;
+            this.getGoodsData();
         },
-        handleCurrentChange(){
-            
+
+        //监听当前页变更
+        handleCurrentChange(page){
+            this.apiQuery.pageIndex = page; //接收到新的每页数量, 赋值给apiQuery里的pigeSize, 分页组件就会刷新视图
+            this.getGoodsData();  //重新渲染页面
         },
 
         // 监听多选框变化状态,selection参数可以拿到被点击的数据
@@ -135,12 +139,15 @@
 
             //用api把接口存储起来
             let api = `${this.$api.gsList}?pageIndex=${this.apiQuery.pageIndex}&pageSize=${this.apiQuery.pageSize}&searchvalue=${this.apiQuery.searchvalue}`
+
             this.$http.get (api).then((res)=>{
                 // console.log(res);
                 if(res.data.status==0){
 
                     //把请求回来的数据覆盖原来tableData3的数据,表格会自动刷新
                     this.tableData3=res.data.message;
+
+                    this.apiQuery.total=res.data.totalcount;
                 }
             })
         },
