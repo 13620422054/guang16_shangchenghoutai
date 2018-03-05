@@ -56,7 +56,7 @@ router.beforeEach((to, from, next) => {
             //判断是否访问
             if (!islogin) {
                 //如果未登录
-                next({ name: 'login' })
+                next({ name: 'login', query: { next: to.fullPath } })
             } else {
                 next();
             }
