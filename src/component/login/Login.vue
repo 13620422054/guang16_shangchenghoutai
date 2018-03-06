@@ -56,7 +56,7 @@
                 localStorage.setItem('uname',res.data.message.uname);
                 // 跳转到后台页面
                 // this.$router.push({name:'admin'});
-                let nextPage= this.$router.query.next || 'admin';
+                let nextPage= this.$route.query.next || '/admin';
                 this.$router.push({path:nextPage})
               }else{
                    this.$alert(res.data.message)
